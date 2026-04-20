@@ -1,0 +1,48 @@
+[build-system]
+requires = ["flit-core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Framework :: Pytest",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Testing",
+    "License :: OSI Approved :: MIT License",
+]
+keywords = ["testing", "pytest", "grpc-web", "tavern"]
+name = "tavern-grpc-web"
+description = "gRPC-Web backend plugin for Tavern"
+version = "0.1.0"
+dependencies = [
+    "tavern>=3.3.0",
+    "requests>=2.22.0,<3",
+    "protobuf>=5,<6",
+]
+requires-python = ">=3.11"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.optional-dependencies]
+dev = [
+    "flit >=3.2,<4",
+    "wheel",
+    "pytest>=8,<10",
+    "ruff~=0.9.10",
+]
+
+[project.entry-points.tavern_grpc_web]
+grpc_web = "tavern_grpc_web.tavernhook"
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.format]
+docstring-code-format = true
