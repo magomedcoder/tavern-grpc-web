@@ -10,7 +10,7 @@ wire format.
 ### Install from Git
 
 ```bash
-pip install "tavern-grpc-web @ git+https://github.com/magomedcoder/tavern_grpc_web.git"
+pip install "tavern-grpc-web @ git+https://github.com/magomedcoder/tavern-grpc-web.git"
 ```
 
 ### Local development

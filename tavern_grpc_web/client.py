@@ -19,6 +19,8 @@ from tavern_grpc_web.codec import decode_grpc_web_body, encode_data_frame
 
 logger = logging.getLogger(__name__)
 
+MethodTypes = tuple[type, type]
+
 
 def _split_service_method(full: str) -> tuple[str, str]:
     # gRPC-Web still targets canonical gRPC paths: package.Service/Method
@@ -72,6 +74,7 @@ class GRPCWebSession:
         self.default_headers: dict[str, str] = {
             k: str(v) for k, v in raw_headers.items() if str(v).strip() != ""
         }
+        self._method_type_cache: dict[tuple[str, str], MethodTypes] = {}
 
         self.sym_db = Default()
 
@@ -100,13 +103,20 @@ class GRPCWebSession:
         )
         self._session.headers.update(self.default_headers)
 
-    def get_method_types(self, service: str, method: str):
+    def get_method_types(self, service: str, method: str) -> MethodTypes:
+        cache_key = (service, method)
+        cached = self._method_type_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
         pool = self.sym_db.pool
         grpc_service = pool.FindServiceByName(service)
         m = grpc_service.FindMethodByName(method)
         input_type = GetMessageClass(m.input_type)
         output_type = GetMessageClass(m.output_type)
-        return input_type, output_type
+        method_types = (input_type, output_type)
+        self._method_type_cache[cache_key] = method_types
+        return method_types
 
     def call(
             self,

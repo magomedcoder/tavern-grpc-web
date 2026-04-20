@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "tavern",
-    "tavern-grpc-web @ git+https://github.com/magomedcoder/tavern_grpc_web.git",
+    "tavern-grpc-web @ git+https://github.com/magomedcoder/tavern-grpc-web.git",
     "flask",
 ]
 
